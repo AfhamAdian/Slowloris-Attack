@@ -35,6 +35,9 @@ def parse_args():
     p.add_argument("--attack-secs", type=float, default=60)
     p.add_argument("--recovery-secs", type=float, default=30)
     p.add_argument("--max-request-workers", type=int, default=30)
+    p.add_argument("--attacker-source-ip", default=None,
+                    help="passed through to run_experiment.py; set to 127.0.0.2 for a defended "
+                         "run so the connlimit rule can tell the attacker apart from the client")
     return p.parse_args()
 
 
@@ -76,7 +79,7 @@ def main():
         run_dir = os.path.join(args.out_dir, f"sweep_N{n}")
         print(f"\n########## N={n} -> {run_dir} ##########")
 
-        subprocess.run([
+        run_cmd = [
             PYTHON, os.path.join(HERE, "run_experiment.py"),
             "--n", str(n),
             "--out-dir", run_dir,
@@ -84,7 +87,10 @@ def main():
             "--attack-secs", str(args.attack_secs),
             "--recovery-secs", str(args.recovery_secs),
             "--max-request-workers", str(args.max_request_workers),
-        ], check=True)
+        ]
+        if args.attacker_source_ip:
+            run_cmd += ["--attacker-source-ip", args.attacker_source_ip]
+        subprocess.run(run_cmd, check=True)
 
         subprocess.run([
             PYTHON, os.path.join(HERE, "plot_results.py"),

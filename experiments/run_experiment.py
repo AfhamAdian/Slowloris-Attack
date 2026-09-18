@@ -36,6 +36,10 @@ def parse_args():
     p.add_argument("--attack-secs", type=float, default=60)
     p.add_argument("--recovery-secs", type=float, default=30)
     p.add_argument("--attacker-interval", type=float, default=5, help="seconds between attacker header sends")
+    p.add_argument("--attacker-source-ip", default=None,
+                    help="bind the attacker's sockets to this local IP (e.g. 127.0.0.2), so a "
+                         "per-IP connection-limit defense can tell it apart from the legitimate "
+                         "client. Leave unset for the undefended run.")
     p.add_argument("--client-rate", type=float, default=1, help="seconds between legitimate client requests")
     p.add_argument("--client-timeout", type=float, default=5)
     p.add_argument("--poll-interval", type=float, default=1, help="seconds between monitor samples")
@@ -82,12 +86,16 @@ def main():
     time.sleep(args.baseline_secs)
 
     attack_start = time.time()
-    print(f"[attack] starting attacker with N={args.n} for {args.attack_secs}s ...")
+    print(f"[attack] starting attacker with N={args.n} for {args.attack_secs}s "
+          f"(source ip: {args.attacker_source_ip or 'default'}) ...")
+    attacker_cmd = [PYTHON, os.path.join(core_dir, "attacker.py"),
+                     "--target-ip", args.target_ip, "--target-port", str(args.target_port),
+                     "--num-sockets", str(args.n), "--interval", str(args.attacker_interval),
+                     "--duration", str(args.attack_secs)]
+    if args.attacker_source_ip:
+        attacker_cmd += ["--source-ip", args.attacker_source_ip]
     attacker_proc = subprocess.Popen(
-        [PYTHON, os.path.join(core_dir, "attacker.py"),
-         "--target-ip", args.target_ip, "--target-port", str(args.target_port),
-         "--num-sockets", str(args.n), "--interval", str(args.attacker_interval),
-         "--duration", str(args.attack_secs)],
+        attacker_cmd,
         stdout=attacker_stdout, stderr=subprocess.STDOUT,
     )
     attacker_proc.wait()  # attacker exits on its own after --duration
@@ -104,6 +112,7 @@ def main():
     phases = {
         "n": args.n,
         "max_request_workers": args.max_request_workers,
+        "attacker_source_ip": args.attacker_source_ip,
         "baseline_start": baseline_start,
         "attack_start": attack_start,
         "recovery_start": recovery_start,
