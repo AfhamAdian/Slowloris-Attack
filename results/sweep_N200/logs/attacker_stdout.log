@@ -1,0 +1,15 @@
+Opening 200 sockets to 127.0.0.1:80 ...
+200 sockets connected. Sending a header every 5.0s on each. Press Ctrl+C to stop.
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+[attacker] 200 connections currently held open
+Duration reached, closed all sockets.

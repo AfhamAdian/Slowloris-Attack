@@ -13,8 +13,10 @@ Requires: pip install psutil
 Requires Apache's mod_status enabled with a URL like /server-status?auto
 
 Run with:  python3 monitor.py
+Or with options:  python3 monitor.py --poll-interval 1 --duration 120
 """
 
+import argparse
 import csv
 import re
 import subprocess
@@ -23,23 +25,25 @@ import urllib.request
 
 import psutil
 
-# --- settings you can tweak -------------------------------------------------
-TARGET_IP = "127.0.0.1"
-TARGET_PORT = 80
-STATUS_URL = f"http://{TARGET_IP}:{TARGET_PORT}/server-status?auto"
-POLL_INTERVAL = 2   # seconds between samples
-LOG_FILE = "monitor_log.csv"
-# -----------------------------------------------------------------------------
+
+def parse_args():
+    p = argparse.ArgumentParser(description="Server monitor")
+    p.add_argument("--target-ip", default="127.0.0.1")
+    p.add_argument("--target-port", type=int, default=80)
+    p.add_argument("--poll-interval", type=float, default=1, help="seconds between samples")
+    p.add_argument("--duration", type=float, default=None, help="stop after this many seconds (default: run forever)")
+    p.add_argument("--log-file", default="monitor_log.csv")
+    return p.parse_args()
 
 
-def get_worker_counts():
+def get_worker_counts(status_url):
     """
     Fetch Apache's mod_status page (auto/plain-text format) and pull out
     BusyWorkers and IdleWorkers. Returns (busy, idle), or (None, None) if
     the page could not be read (e.g. server is completely stuck).
     """
     try:
-        with urllib.request.urlopen(STATUS_URL, timeout=3) as response:
+        with urllib.request.urlopen(status_url, timeout=3) as response:
             text = response.read().decode()
 
         busy = re.search(r"BusyWorkers:\s*(\d+)", text)
@@ -51,35 +55,42 @@ def get_worker_counts():
         return None, None
 
 
-def get_open_connections():
+def get_open_connections(target_port):
     """
-    Count open TCP connections to the target port using `ss -tn`.
+    Count open TCP connections to the target port using `ss -tn`,
+    filtered on the exact port (not a substring match, which would
+    also catch unrelated ephemeral ports that happen to contain the
+    same digits).
     """
     try:
         output = subprocess.run(
-            ["ss", "-tn"], capture_output=True, text=True, timeout=3
+            ["ss", "-tn", f"( dport = :{target_port} or sport = :{target_port} )"],
+            capture_output=True, text=True, timeout=3,
         ).stdout
         lines = output.splitlines()[1:]  # skip the header line
-        matching = [line for line in lines if f":{TARGET_PORT}" in line]
-        return len(matching)
+        return len([line for line in lines if line.strip()])
     except Exception:
         return None
 
 
 def main():
-    print(f"Polling {STATUS_URL} every {POLL_INTERVAL}s. "
-          f"Logging to {LOG_FILE}. Press Ctrl+C to stop.")
+    args = parse_args()
+    status_url = f"http://{args.target_ip}:{args.target_port}/server-status?auto"
+    end_time = time.time() + args.duration if args.duration else None
 
-    with open(LOG_FILE, "w", newline="") as f:
+    print(f"Polling {status_url} every {args.poll_interval}s. "
+          f"Logging to {args.log_file}. Press Ctrl+C to stop.")
+
+    with open(args.log_file, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(
             ["time", "busy_workers", "idle_workers", "open_connections", "cpu_pct", "mem_pct"]
         )
 
-        while True:
+        while end_time is None or time.time() < end_time:
             timestamp = time.time()
-            busy, idle = get_worker_counts()
-            open_conns = get_open_connections()
+            busy, idle = get_worker_counts(status_url)
+            open_conns = get_open_connections(args.target_port)
             cpu_pct = psutil.cpu_percent(interval=None)
             mem_pct = psutil.virtual_memory().percent
 
@@ -88,7 +99,7 @@ def main():
 
             print(f"[monitor] busy={busy} idle={idle} conns={open_conns} "
                   f"cpu={cpu_pct}% mem={mem_pct}%")
-            time.sleep(POLL_INTERVAL)
+            time.sleep(args.poll_interval)
 
 
 if __name__ == "__main__":

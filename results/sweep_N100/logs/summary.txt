@@ -1,0 +1,5 @@
+=== Summary for N=100 (results/sweep_N100) ===
+[baseline] duration=20s  success=100.0%  avg_latency=0.001s  max_busy_workers=1.0  max_open_conns=0  avg_cpu=1.7%
+[attack] duration=60s  success=0.0%  avg_latency=5.006s  max_busy_workers=nan  max_open_conns=250  avg_cpu=1.5%
+[recovery] duration=30s  success=100.0%  avg_latency=0.001s  max_busy_workers=2.0  max_open_conns=1  avg_cpu=1.4%
+Time from attack start to worker pool saturation: 0.2s
