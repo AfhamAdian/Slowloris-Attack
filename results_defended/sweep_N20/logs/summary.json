@@ -1,0 +1,19 @@
+{
+  "n": 20,
+  "baseline_success_pct": 100.0,
+  "baseline_avg_latency": 0.0012500000000000002,
+  "baseline_max_busy_workers": 1.0,
+  "baseline_max_open_conns": 0.0,
+  "baseline_avg_cpu": 3.349999999999999,
+  "attack_success_pct": 100.0,
+  "attack_avg_latency": 0.04632758620689653,
+  "attack_max_busy_workers": 12.0,
+  "attack_max_open_conns": 20.0,
+  "attack_avg_cpu": 5.512280701754385,
+  "recovery_success_pct": 100.0,
+  "recovery_avg_latency": 0.0010000000000000002,
+  "recovery_max_busy_workers": 1.0,
+  "recovery_max_open_conns": 10.0,
+  "recovery_avg_cpu": 0.5566666666666666,
+  "time_to_saturation": null
+}

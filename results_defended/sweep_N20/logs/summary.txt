@@ -1,0 +1,5 @@
+=== Summary for N=20 (results_defended/sweep_N20) ===
+[baseline] duration=20s  success=100.0%  avg_latency=0.001s  max_busy_workers=1  max_open_conns=0  avg_cpu=3.3%
+[attack] duration=60s  success=100.0%  avg_latency=0.046s  max_busy_workers=12  max_open_conns=20  avg_cpu=5.5%
+[recovery] duration=31s  success=100.0%  avg_latency=0.001s  max_busy_workers=1  max_open_conns=10  avg_cpu=0.6%
+Worker pool never fully saturated during the attack window
