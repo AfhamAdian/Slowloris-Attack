@@ -1,5 +1,5 @@
 === Summary for N=50 (results/sweep_N50) ===
-[baseline] duration=20s  success=100.0%  avg_latency=0.001s  max_busy_workers=1.0  max_open_conns=0  avg_cpu=2.0%
-[attack] duration=60s  success=0.0%  avg_latency=5.005s  max_busy_workers=nan  max_open_conns=150  avg_cpu=1.6%
-[recovery] duration=30s  success=100.0%  avg_latency=0.001s  max_busy_workers=2.0  max_open_conns=0  avg_cpu=1.5%
-Time from attack start to worker pool saturation: 0.3s
+[baseline] duration=20s  success=100.0%  avg_latency=0.001s  max_busy_workers=1.0  max_open_conns=0  avg_cpu=10.1%
+[attack] duration=60s  success=0.0%  avg_latency=5.005s  max_busy_workers=nan  max_open_conns=150  avg_cpu=8.3%
+[recovery] duration=30s  success=100.0%  avg_latency=0.001s  max_busy_workers=2.0  max_open_conns=0  avg_cpu=16.8%
+Time from attack start to worker pool saturation: 0.2s

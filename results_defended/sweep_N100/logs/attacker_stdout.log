@@ -1,15 +1,15 @@
 Opening 100 sockets to 127.0.0.1:80 (source ip: 127.0.0.2) ...
-0 sockets connected. Sending a header every 5.0s on each. Press Ctrl+C to stop.
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
-[attacker] 0 connections currently held open
+10 sockets connected. Sending a header every 5.0s on each. Press Ctrl+C to stop.
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
+[attacker] 10 connections currently held open
 Duration reached, closed all sockets.

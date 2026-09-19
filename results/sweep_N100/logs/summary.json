@@ -1,19 +1,19 @@
 {
   "n": 100,
   "baseline_success_pct": 100.0,
-  "baseline_avg_latency": 0.0010500000000000002,
+  "baseline_avg_latency": 0.0013000000000000002,
   "baseline_max_busy_workers": 1.0,
   "baseline_max_open_conns": 0.0,
-  "baseline_avg_cpu": 1.7399999999999998,
+  "baseline_avg_cpu": 16.515,
   "attack_success_pct": 0.0,
-  "attack_avg_latency": 5.0059,
+  "attack_avg_latency": 5.0057,
   "attack_max_busy_workers": null,
   "attack_max_open_conns": 250.0,
-  "attack_avg_cpu": 1.5266666666666664,
+  "attack_avg_cpu": 11.813333333333334,
   "recovery_success_pct": 100.0,
-  "recovery_avg_latency": 0.0010000000000000002,
+  "recovery_avg_latency": 0.001066666666666667,
   "recovery_max_busy_workers": 2.0,
-  "recovery_max_open_conns": 1.0,
-  "recovery_avg_cpu": 1.3766666666666665,
-  "time_to_saturation": 0.24263644218444824
+  "recovery_max_open_conns": 0.0,
+  "recovery_avg_cpu": 4.623333333333333,
+  "time_to_saturation": 0.2591714859008789
 }

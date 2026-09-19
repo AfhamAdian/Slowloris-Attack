@@ -1,0 +1,5 @@
+n,time_to_saturation_s,attack_success_pct,attack_avg_latency_s,attack_max_busy_workers,attack_max_open_conns
+20,None,100.0,0.052,12.0,21.0
+50,None,100.0,0.013,11.0,20.0
+100,None,100.0,0.005,11.0,21.0
+200,None,100.0,0.001,10.0,18.0

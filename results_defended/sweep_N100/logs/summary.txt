@@ -1,5 +1,5 @@
 === Summary for N=100 (results_defended/sweep_N100) ===
-[baseline] duration=20s  success=100.0%  avg_latency=0.001s  max_busy_workers=1  max_open_conns=0  avg_cpu=10.8%
-[attack] duration=60s  success=100.0%  avg_latency=0.001s  max_busy_workers=1  max_open_conns=0  avg_cpu=5.3%
-[recovery] duration=30s  success=100.0%  avg_latency=0.001s  max_busy_workers=1  max_open_conns=0  avg_cpu=6.1%
+[baseline] duration=20s  success=100.0%  avg_latency=0.001s  max_busy_workers=1  max_open_conns=0  avg_cpu=1.7%
+[attack] duration=60s  success=100.0%  avg_latency=0.005s  max_busy_workers=11  max_open_conns=21  avg_cpu=4.5%
+[recovery] duration=30s  success=100.0%  avg_latency=0.001s  max_busy_workers=1  max_open_conns=10  avg_cpu=2.9%
 Worker pool never fully saturated during the attack window

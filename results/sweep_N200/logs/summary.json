@@ -4,16 +4,16 @@
   "baseline_avg_latency": 0.0010500000000000002,
   "baseline_max_busy_workers": 1.0,
   "baseline_max_open_conns": 0.0,
-  "baseline_avg_cpu": 1.8400000000000003,
+  "baseline_avg_cpu": 9.305000000000001,
   "attack_success_pct": 9.090909090909092,
-  "attack_avg_latency": 4.550727272727273,
+  "attack_avg_latency": 4.550545454545454,
   "attack_max_busy_workers": null,
   "attack_max_open_conns": 450.0,
-  "attack_avg_cpu": 1.52,
+  "attack_avg_cpu": 6.886666666666668,
   "recovery_success_pct": 100.0,
-  "recovery_avg_latency": 0.00103448275862069,
+  "recovery_avg_latency": 0.0010000000000000002,
   "recovery_max_busy_workers": 2.0,
-  "recovery_max_open_conns": 0.0,
-  "recovery_avg_cpu": 1.82,
-  "time_to_saturation": 0.2509946823120117
+  "recovery_max_open_conns": 3.0,
+  "recovery_avg_cpu": 4.0200000000000005,
+  "time_to_saturation": 0.253401517868042
 }
